@@ -211,7 +211,7 @@ resizeFireworksCanvas();
 
 function launchRocket(){
     if(!isAnimating) return;
-    const rocket={x:fWidth*random(0.2,0.8),y:fHeight,vy:random(5,10),color:hsl(${random(0,360)},70%,50%),targetY:fHeight*random(0.2,0.4),exploded:false};
+    const rocket={x:fWidth*random(0.2,0.8),y:fHeight,vy:random(5,10),color:`hsl(${random(0,360)},70%,50%)`,targetY:fHeight*random(0.2,0.4),exploded:false};
     rockets.push(rocket);
 }
 
@@ -234,7 +234,7 @@ function updateFireworks(){
     particlesFw=particlesFw.filter(p=>{
         if(p.alpha>0.05){
             p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.alpha-=0.02;
-            fCtx.fillStyle=p.color.replace('hsl','hsla').replace(')',,${p.alpha}));
+            fCtx.fillStyle=p.color.replace('hsl','hsla').replace(')',`,${p.alpha})`);
             fCtx.beginPath(); fCtx.arc(p.x,p.y,p.r,0,Math.PI*2); fCtx.fill();
             return true;
         }
@@ -265,9 +265,9 @@ function resize(){ width=canvas.width=window.innerWidth; height=canvas.height=wi
 window.addEventListener('resize',resize);
 resize();
 class Particle{ constructor(){this.reset();}
-    reset(){this.x=Math.random()width;this.y=Math.random()-height;this.vy=1+Math.random()*3;this.vx=0.5-Math.random();this.r=1+Math.random()*3;this.opacity=0.5+Math.random()*0.5;}
+    reset(){this.x=Math.random()*width;this.y=Math.random()*-height;this.vy=1+Math.random()*3;this.vx=0.5-Math.random();this.r=1+Math.random()*3;this.opacity=0.5+Math.random()*0.5;}
     update(){this.y+=this.vy;this.x+=this.vx;if(this.y>height)this.reset();}
-    draw(){ctx.fillStyle=rgba(255,255,255,${this.opacity});ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();}
+    draw(){ctx.fillStyle=`rgba(255,255,255,${this.opacity})`;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();}
 }
 function initSnow(){particles=[];for(let i=0;i<150;i++)particles.push(new Particle()); loop();}
 function loop(){ctx.clearRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(loop);}
@@ -294,7 +294,7 @@ function updateTimer(){
         const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
         const m=Math.floor((diff%(1000*60*60))/(1000*60));
         const s=Math.floor((diff%(1000*60))/1000);
-        document.getElementById('timer').innerHTML=${d} días ${h.toString().padStart(2,'0')} horas ${m.toString().padStart(2,'0')} minutos ${s.toString().padStart(2,'0')} segundos;
+        document.getElementById('timer').innerHTML=`${d} días ${h.toString().padStart(2,'0')} horas ${m.toString().padStart(2,'0')} minutos ${s.toString().padStart(2,'0')} segundos`;
     }
 }
 updateTimer(); // Ejecuta inmediatamente para simular Nochebuena
