@@ -7,232 +7,297 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-    --color-azul-empremar:#002266;
-    --color-dorado-empremar:#FFD700;
-    --color-rojo-festivo:#D40000;
-    --color-fondo-oscuro:#0a0a12;
-    --color-texto-blanco:#ffffff;
-    --glass-bg:rgba(0,34,102,0.25);
+    --color-azul-empremar: #002266;
+    --color-dorado-empremar: #FFD700;
+    --color-rojo-festivo: #D40000;
+    --color-fondo-oscuro: #0a0a12;
+    --color-texto-blanco: #ffffff;
+    --glass-bg: rgba(0, 34, 102, 0.25);
 }
 
 body {
-    font-family:'Montserrat',sans-serif;
-    margin:0; padding:0;
-    min-height:100vh;
-    background: radial-gradient(circle at 50% 30%, #1a2a4f 0%, var(--color-fondo-oscuro) 70%);
-    display:flex; justify-content:center; align-items:center;
-    overflow:hidden; color:var(--color-texto-blanco);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: var(--color-fondo-oscuro);
+    background-image: radial-gradient(circle at 50% 30%, #1a2a4f 0%, var(--color-fondo-oscuro) 70%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: var(--color-texto-blanco);
 }
 
-/* Canvas Animaciones */
-#snowCanvas, #fireworks-container {position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;}
-#fireworks-container{z-index:50; display:none;}
-#fireworksCanvas{width:100%; height:100%;}
+#snowCanvas, #fireworks-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+#fireworks-container { z-index: 50; display: none; }
+#fireworksCanvas { width: 100%; height: 100%; }
 
-/* Globos */
-.balloon {position:absolute; bottom:-50px; font-size:40px; opacity:0; animation:rise 15s linear forwards; pointer-events:none;}
+.balloon {
+    position: absolute; bottom: -50px; font-size: 40px;
+    opacity: 0; animation: rise 15s linear forwards;
+    pointer-events: none;
+}
 @keyframes rise {
-0%{transform:translateY(0) rotate(0deg); opacity:0;}
-10%{opacity:1;}
-90%{opacity:1;}
-100%{transform:translateY(-100vh) rotate(360deg); opacity:0;}
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
 }
 
-/* Modal */
 #holidayModal {
-position:fixed; inset:0; background:rgba(10,10,18,0.85); backdrop-filter:blur(6px);
-display:none; justify-content:center; align-items:center; z-index:100; opacity:0;
-transition:opacity 0.5s ease-in-out;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 18, 0.85);
+    backdrop-filter: blur(6px);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
-#holidayModal[aria-hidden="false"]{display:flex; opacity:1;}
+#holidayModal.show { opacity: 1; }
 #holidayModal .modal-content {
-background: rgba(0,34,102,0.9); border:2px solid var(--color-dorado-empremar); border-radius:20px;
-padding:40px; max-width:500px; text-align:center; box-shadow:0 0 30px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.15);
+    background: rgba(0,34,102,0.9);
+    border: 2px solid #FFD700;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.15);
 }
-#holidayModal .modal-content h3{color:#FFD700; font-size:26px; margin:15px 0;}
-#holidayModal .modal-content p{font-size:18px; line-height:1.6; color:#e0e0e0;}
+#holidayModal .modal-content h3 {
+    color: #FFD700; font-size: 26px; margin: 15px 0;
+}
+#holidayModal .modal-content p {
+    font-size: 18px; line-height: 1.6;
+}
 
-/* Tarjeta Glass */
-.glass-card{
-position:relative; z-index:10; width:90%; max-width:800px; padding:40px;
-background:var(--glass-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-border-radius:20px; border:2px solid var(--color-dorado-empremar);
-box-shadow:0 0 20px rgba(255,215,0,0.3), inset 0 0 20px rgba(255,215,0,0.1);
-text-align:left; overflow:hidden;
+.glass-card {
+    position: relative; z-index: 10; width: 90%; max-width: 800px; padding: 40px;
+    background: var(--glass-bg); backdrop-filter: blur(12px);
+    border-radius: 20px; border: 2px solid var(--color-dorado-empremar);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
+    text-align: left; overflow: hidden;
 }
 .glass-card::before {
-content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
-background:conic-gradient(transparent, transparent, transparent, var(--color-dorado-empremar));
-animation: rotate 4s linear infinite; opacity:0.15; pointer-events:none; will-change:transform;
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: conic-gradient(transparent, transparent, transparent, var(--color-dorado-empremar));
+    animation: rotate 4s linear infinite; opacity: 0.15; pointer-events: none;
 }
-@keyframes rotate{100%{transform:rotate(1turn);}}
+@keyframes rotate { 100% { transform: rotate(1turn); } }
 
-.card-content-grid {display:grid; grid-template-columns:1fr 180px; grid-template-rows:auto auto auto; gap:20px; align-items:center;}
-.logo-header{grid-column:1/-1; margin-bottom:20px; text-align:center; display:flex; justify-content:center;}
-.empremar-logo{max-width:250px; height:auto; filter:drop-shadow(0 0 5px rgba(255,255,255,0.2));}
-.text-area{grid-column:1/2;}
-h1{font-size:48px; font-weight:900; margin:0; color:var(--color-rojo-festivo); text-transform:uppercase; letter-spacing:2px; text-shadow:0 0 15px var(--color-rojo-festivo);}
-h2{font-size:24px; color:var(--color-dorado-empremar); margin:5px 0 20px 0; font-weight:400;}
-p.message{font-size:18px; line-height:1.6; color:#e0e0e0;}
-.tree-area{grid-column:2/3; font-size:120px; text-align:center; filter:drop-shadow(0 0 20px var(--color-dorado-empremar)); animation:treePulse 3s infinite alternate ease-in-out;}
-@keyframes treePulse{0%{transform:scale(1);} 100%{transform:scale(1.05);}}
+.card-content-grid {
+    display: grid; grid-template-columns: 1fr 180px; grid-template-rows: auto auto auto;
+    gap: 20px; align-items: center;
+}
+.logo-header { grid-column: 1 / -1; margin-bottom: 20px; text-align: center; display:flex; justify-content:center;}
+.empremar-logo { max-width: 250px; height: auto; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+.text-area { grid-column: 1 / 2; }
+h1 { font-size: 48px; font-weight: 900; margin: 0; color: var(--color-rojo-festivo); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px var(--color-rojo-festivo); }
+h2 { font-size: 24px; color: var(--color-dorado-empremar); margin: 5px 0 20px 0; font-weight: 400; }
+p.message { font-size: 18px; line-height: 1.6; color: #e0e0e0; }
 
-.countdown-container{grid-column:1/-1; margin-top:30px; padding:20px; background: rgba(0,34,102,0.5); border-radius:12px; border:1px solid var(--color-dorado-empremar); text-align:center;}
-.countdown-label{color:var(--color-dorado-empremar); font-size:16px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block;}
-#timer{font-size:42px; font-weight:700; color:#fff; text-shadow:0 0 10px var(--color-dorado-empremar);}
-.footer-sig{grid-column:1/-1; margin-top:20px; text-align:right; font-size:14px; color:var(--color-dorado-empremar); opacity:0.8;}
+.tree-area { grid-column: 2 / 3; font-size: 120px; text-align: center; filter: drop-shadow(0 0 20px var(--color-dorado-empremar)); animation: treePulse 3s infinite alternate ease-in-out; }
+@keyframes treePulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
 
-/* Responsive */
-@media(max-width:768px){
-.card-content-grid{grid-template-columns:1fr; text-align:center;}
-.tree-area{grid-column:1/-1; grid-row:1; font-size:80px; margin-bottom:-20px;}
-.text-area{grid-column:1/-1;}
-h1{font-size:36px;}
-#timer{font-size:28px;}
-.footer-sig{text-align:center;}
+.countdown-container { grid-column: 1 / -1; margin-top: 30px; padding: 20px; background: rgba(0, 34, 102, 0.5); border-radius: 12px; border: 1px solid var(--color-dorado-empremar); text-align: center; }
+.countdown-label { color: var(--color-dorado-empremar); font-size: 16px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+#timer { font-size: 42px; font-weight: 700; color: #fff; text-shadow: 0 0 10px var(--color-dorado-empremar); }
+
+.footer-sig { grid-column: 1 / -1; margin-top: 20px; text-align: right; font-size: 14px; color: var(--color-dorado-empremar); opacity: 0.8; }
+
+@media (max-width: 768px) {
+    .card-content-grid { grid-template-columns: 1fr; text-align: center; }
+    .tree-area { grid-column: 1 / -1; grid-row: 1; font-size: 80px; margin-bottom: -20px; }
+    .text-area { grid-column: 1 / -1; }
+    h1 { font-size: 36px; }
+    #timer { font-size: 28px; }
+    .footer-sig { text-align: center; }
 }
 </style>
 </head>
 <body>
-
 <canvas id="snowCanvas"></canvas>
 
 <div id="fireworks-container">
-<canvas id="fireworksCanvas"></canvas>
+    <canvas id="fireworksCanvas"></canvas>
 </div>
 
 <div class="glass-card">
-<div class="card-content-grid">
-<div class="logo-header">
-<img src="https://www.empremar.ni/images/Log-Empremar1.svg" alt="Logo EMPREMAR" class="empremar-logo" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
-<h2 id="logo-fallback" style="display:none; color: var(--color-dorado-empremar);">GRUPO LOGÍSTICO EMPREMAR</h2>
-</div>
-<div class="text-area">
-<h1>¡Felices Fiestas!</h1>
-<h2>Excelencia en cada entrega</h2>
-<p class="message">
-En el mundo de la logística, a menudo se habla de rutas, tiempos de entrega y eficiencia. Pero la verdad es que EMPREMAR no se mueve por motores ni por sistemas informáticos, se mueve gracias a ustedes. Les deseamos un camino próspero hacia el 2026.
-</p>
-</div>
-<div class="tree-area">🎄</div>
-<div class="countdown-container">
-<span class="countdown-label">Tiempo hasta Nochebuena</span>
-<div id="timer">Cargando...</div>
-</div>
-<div class="footer-sig">
-"Calidad hecha Servicio!" | EMPREMAR 2025
-</div>
-</div>
+    <div class="card-content-grid">
+        <div class="logo-header">
+            <img src="https://www.empremar.ni/images/Log-Empremar1.svg" alt="Logo EMPREMAR" class="empremar-logo" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+            <h2 id="logo-fallback" style="display:none; color: var(--color-dorado-empremar);">GRUPO LOGÍSTICO EMPREMAR</h2>
+        </div>
+
+        <div class="text-area">
+            <h1>¡Felices Fiestas!</h1>
+            <h2>Excelencia en cada entrega</h2>
+            <p class="message">
+                En el mundo de la logística, a menudo se habla de rutas, tiempos de entrega y eficiencia. Pero la verdad es que EMPREMAR no se mueve por motores ni por sistemas informáticos, se mueve gracias a ustedes. Les deseamos un camino próspero hacia el 2026.
+            </p>
+        </div>
+
+        <div class="tree-area">🎄</div>
+
+        <div class="countdown-container">
+            <span class="countdown-label">Tiempo hasta Nochebuena</span>
+            <div id="timer">Cargando...</div>
+        </div>
+
+        <div class="footer-sig">
+            "Calidad hecha Servicio!" | EMPREMAR 2025
+        </div>
+    </div>
 </div>
 
-<div id="holidayModal" role="dialog" aria-modal="true" aria-hidden="true">
-<div class="modal-content">
-<div style="font-size:50px;">🎄🎁✨</div>
-<h3>¡Feliz Navidad!</h3>
-<p>
-Grupo Logístico EMPREMAR agradece su esfuerzo, compromiso y dedicación.<br>
-Que estas fiestas estén llenas de paz, unión y prosperidad.
-</p>
-</div>
+<div id="holidayModal">
+    <div class="modal-content">
+        <div style="font-size:50px;">🎄🎁✨</div>
+        <h3>¡Feliz Navidad!</h3>
+        <p>
+            Grupo Logístico EMPREMAR agradece su esfuerzo, compromiso y dedicación.<br>
+            Que estas fiestas estén llenas de paz, unión y prosperidad.
+        </p>
+    </div>
 </div>
 
 <script>
-// Variables
 const holidayModal = document.getElementById('holidayModal');
 let christmasReached = false;
 
+// Funciones modal
 function showModal(){
-  holidayModal.setAttribute('aria-hidden','false');
+    holidayModal.style.display = 'flex';
+    setTimeout(()=>holidayModal.classList.add('show'),50);
 }
 function closeModal(){
-  holidayModal.setAttribute('aria-hidden','true');
+    holidayModal.classList.remove('show');
+    setTimeout(()=>holidayModal.style.display='none',500);
 }
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape') closeModal();
-});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-// Countdown
-function updateTimer(){
-  const now = new Date();
-  const year = now.getFullYear();
-  let target = new Date(year,11,24,0,0,0);
-  if(now>=target) target.setFullYear(year+1);
-  const diff = target-now;
-  if(diff<=0){
-    document.getElementById('timer').innerHTML="¡Feliz Navidad y Próspero 2026!";
-    if(!christmasReached){christmasReached=true; activateHolidayAnimations(); showModal();}
-  }else{
-    const d=Math.floor(diff/(1000*60*60*24));
-    const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const m=Math.floor((diff%(1000*60*60))/(1000*60));
-    const s=Math.floor((diff%(1000*60))/1000);
-    document.getElementById('timer').innerHTML=`${d} días ${h.toString().padStart(2,'0')} horas ${m.toString().padStart(2,'0')} minutos ${s.toString().padStart(2,'0')} segundos`;
-  }
-}
-setInterval(updateTimer,1000);
-updateTimer();
-
-// Animaciones globos y fuegos
-const balloonEmojis=["🎈","🎁","✨","⭐","🎊"];
-const fCanvas=document.getElementById('fireworksCanvas');
-const fCtx=fCanvas.getContext('2d'); let fWidth,fHeight; let rockets=[]; let particlesFw=[]; let isAnimating=false;
-function resizeFireworksCanvas(){fWidth=fCanvas.width=window.innerWidth; fHeight=fCanvas.height=window.innerHeight;}
-window.addEventListener('resize',resizeFireworksCanvas); resizeFireworksCanvas();
-
+// ----------------------
+// ANIMACIONES GLOBOS Y FUEGOS
+// ----------------------
+const balloonEmojis = ["🎈", "🎁", "✨", "⭐", "🎊"];
+function random(min,max){ return Math.random()*(max-min)+min; }
 function createBalloon(){
-  const container=document.getElementById('fireworks-container');
-  const balloon=document.createElement('div');
-  balloon.className='balloon'; 
-  balloon.textContent=balloonEmojis[Math.floor(Math.random()*balloonEmojis.length)];
-  balloon.style.left=Math.random()*95+'vw'; 
-  balloon.style.animationDelay=Math.random()*5+'s'; 
-  balloon.style.animationDuration=(10+Math.random()*10)+'s';
-  container.appendChild(balloon); 
-  setTimeout(()=>balloon.remove(),25000);
+    const container = document.getElementById('fireworks-container');
+    const balloon = document.createElement('div');
+    balloon.className='balloon';
+    balloon.textContent = balloonEmojis[Math.floor(Math.random()*balloonEmojis.length)];
+    balloon.style.left = random(0,95)+'vw';
+    balloon.style.animationDelay = random(0,5)+'s';
+    balloon.style.animationDuration = random(10,20)+'s';
+    container.appendChild(balloon);
+    setTimeout(()=>balloon.remove(),25000);
 }
+
+const fCanvas = document.getElementById('fireworksCanvas');
+const fCtx = fCanvas.getContext('2d');
+let fWidth,fHeight,rockets=[],particlesFw=[],isAnimating=false;
+function resizeFireworksCanvas(){ fWidth=fCanvas.width=window.innerWidth; fHeight=fCanvas.height=window.innerHeight; }
+window.addEventListener('resize',resizeFireworksCanvas);
+resizeFireworksCanvas();
 
 function launchRocket(){
-  if(!isAnimating) return;
-  const rocket={x:fWidth*0.2+Math.random()*0.6*fWidth,y:fHeight,vy:5+Math.random()*5,color:`hsl(${Math.random()*360},70%,50%)`,targetY:fHeight*0.2+Math.random()*0.2*fHeight,exploded:false};
-  rockets.push(rocket);
+    if(!isAnimating) return;
+    const rocket={x:fWidth*random(0.2,0.8),y:fHeight,vy:random(5,10),color:hsl(${random(0,360)},70%,50%),targetY:fHeight*random(0.2,0.4),exploded:false};
+    rockets.push(rocket);
 }
 
 function createParticles(x,y,color){
-  for(let i=0;i<50;i++){
-    particlesFw.push({x,y,vx:-5+Math.random()*10,vy:-5+Math.random()*10,r:1+Math.random()*2,alpha:1,color,gravity:0.1});
-  }
+    for(let i=0;i<50;i++){
+        particlesFw.push({x,y,vx:random(-5,5),vy:random(-5,5),r:random(1,3),alpha:1,color,gravity:0.1});
+    }
 }
 
 function updateFireworks(){
-  fCtx.clearRect(0,0,fWidth,fHeight);
-  rockets=rockets.filter(r=>{
-    if(r.y>r.targetY){r.y-=r.vy; fCtx.fillStyle=r.color; fCtx.beginPath(); fCtx.arc(r.x,r.y,2,0,Math.PI*2); fCtx.fill(); return true;}
-    else if(!r.exploded){createParticles(r.x,r.y,r.color); r.exploded=true; return false;}
-    return false;
-  });
-  particlesFw=particlesFw.filter(p=>{
-    if(p.alpha>0.05){p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.alpha-=0.02; fCtx.fillStyle=`${p.color.replace(')',`, ${p.alpha})`).replace('hsl','hsla')}`; fCtx.beginPath(); fCtx.arc(p.x,p.y,p.r,0,Math.PI*2); fCtx.fill(); return true;} return false;
-  });
-  if(isAnimating) requestAnimationFrame(updateFireworks);
+    fCtx.fillStyle='rgba(10,10,18,0.1)';
+    fCtx.fillRect(0,0,fWidth,fHeight);
+
+    rockets=rockets.filter(r=>{
+        if(r.y>r.targetY){ r.y-=r.vy; fCtx.fillStyle=r.color; fCtx.beginPath(); fCtx.arc(r.x,r.y,2,0,Math.PI*2); fCtx.fill(); return true;}
+        else if(!r.exploded){ createParticles(r.x,r.y,r.color); r.exploded=true; return false; }
+        return false;
+    });
+
+    particlesFw=particlesFw.filter(p=>{
+        if(p.alpha>0.05){
+            p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.alpha-=0.02;
+            fCtx.fillStyle=p.color.replace('hsl','hsla').replace(')',,${p.alpha}));
+            fCtx.beginPath(); fCtx.arc(p.x,p.y,p.r,0,Math.PI*2); fCtx.fill();
+            return true;
+        }
+        return false;
+    });
+
+    if(isAnimating) requestAnimationFrame(updateFireworks);
 }
 
 let balloonInterval, rocketInterval;
 function activateHolidayAnimations(){
-  document.getElementById('fireworks-container').style.display='block';
-  clearInterval(balloonInterval); balloonInterval=setInterval(createBalloon,1000);
-  isAnimating=true; clearInterval(rocketInterval); rocketInterval=setInterval(launchRocket,1500+Math.random()*1500);
-  updateFireworks();
+    document.getElementById('fireworks-container').style.display='block';
+    clearInterval(balloonInterval);
+    balloonInterval=setInterval(createBalloon,1000);
+    isAnimating=true;
+    clearInterval(rocketInterval);
+    rocketInterval=setInterval(launchRocket,random(1500,3000));
+    updateFireworks();
 }
 
-// Nieve
+// ----------------------
+// NIEVE CANVAS
+// ----------------------
 const canvas=document.getElementById('snowCanvas');
-const ctx=canvas.getContext('2d'); let width,height; let particles=[];
-function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight;}
-window.addEventListener('resize',resize); resize();
-class Particle{constructor(){this.reset();} reset(){this.x=Math.random()*width; this.y=Math.random()*-height; this.vy=1+Math.random()*3; this.vx=0.5-Math.random(); this.r=1+Math.random()*3; this.opacity=0.5+Math.random()*0.5;} update(){this.y+=this.vy; this.x+=this.vx; if(this.y>height)this.reset();} draw(){ctx.fillStyle=`rgba(255,255,255,${this.opacity})`; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();}}
-function initSnow(){particles=[]; for(let i=0;i<150;i++)particles.push(new Particle()); loop();}
-function loop(){ctx.clearRect(0,0,width,height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(loop);}
+const ctx=canvas.getContext('2d');
+let width,height,particles=[];
+function resize(){ width=canvas.width=window.innerWidth; height=canvas.height=window.innerHeight; }
+window.addEventListener('resize',resize);
+resize();
+class Particle{ constructor(){this.reset();}
+    reset(){this.x=Math.random()width;this.y=Math.random()-height;this.vy=1+Math.random()*3;this.vx=0.5-Math.random();this.r=1+Math.random()*3;this.opacity=0.5+Math.random()*0.5;}
+    update(){this.y+=this.vy;this.x+=this.vx;if(this.y>height)this.reset();}
+    draw(){ctx.fillStyle=rgba(255,255,255,${this.opacity});ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();}
+}
+function initSnow(){particles=[];for(let i=0;i<150;i++)particles.push(new Particle()); loop();}
+function loop(){ctx.clearRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(loop);}
 initSnow();
+
+// ----------------------
+// TEMPORIZADOR SIMULANDO NOCHEBUENA
+// ----------------------
+function updateTimer(){
+    const now = new Date();
+    const simulatedNow = new Date(now.getFullYear(),11,24,0,0,0); // 24 diciembre
+    let target = new Date(now.getFullYear(),11,24,0,0,0);
+    const diff = target-simulatedNow;
+
+    if(diff<=0){
+        document.getElementById('timer').innerHTML="¡Feliz Navidad y Próspero 2026!";
+        if(!christmasReached){
+            christmasReached=true;
+            showModal();
+            activateHolidayAnimations();
+        }
+    }else{
+        const d=Math.floor(diff/(1000*60*60*24));
+        const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+        const m=Math.floor((diff%(1000*60*60))/(1000*60));
+        const s=Math.floor((diff%(1000*60))/1000);
+        document.getElementById('timer').innerHTML=${d} días ${h.toString().padStart(2,'0')} horas ${m.toString().padStart(2,'0')} minutos ${s.toString().padStart(2,'0')} segundos;
+    }
+}
+updateTimer(); // Ejecuta inmediatamente para simular Nochebuena
 </script>
 </body>
 </html>
